@@ -31,7 +31,7 @@ class Auth {
     await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
-      confirmPassword: confirmPassword,
+      //confirmPassword: confirmPassword,
     );
   }
 

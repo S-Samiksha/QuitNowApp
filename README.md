@@ -29,7 +29,7 @@ flutterfire configure
 https://flutterworldwide.com/community_rWamixHIKmQ <br>
 https://www.youtube.com/c/FlutterMapp/videos
 
-#### To be done:
-1. password to be hidden
-2. confirm password 
-3. change UI to our one 
+#### To be done by Samiksha(will try them soon):
+1. password to be hidden https://www.youtube.com/watch?v=8ahTwqS0J_8
+2. confirm password https://www.youtube.com/watch?v=8ahTwqS0J_8
+3. change UI to our one https://www.youtube.com/watch?v=8ahTwqS0J_8 
