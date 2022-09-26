@@ -23,3 +23,13 @@ https://www.youtube.com/watch?v=ZSVnIphlGKI
 
 type in the command: <br>
 flutterfire configure 
+
+
+#### Links 
+https://flutterworldwide.com/community_rWamixHIKmQ <br>
+https://www.youtube.com/c/FlutterMapp/videos
+
+#### To be done:
+1. password to be hidden
+2. confirm password 
+3. change UI to our one 
