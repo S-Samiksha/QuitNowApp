@@ -1,7 +1,7 @@
 https://www.youtube.com/watch?v=ZSVnIphlGKI 
 
 
-If you see an error in these few line delete new <br>
+If you see an error in these few lines delete `new` (in the github its already deleted but your own side) <br>
 
 ```gradle
 if (flutterRoot == null) {
