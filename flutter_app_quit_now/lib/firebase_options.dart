@@ -17,24 +17,15 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -52,11 +43,40 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyC8qBB5MorzA3rwbT699YqwiXRiLcKOg90',
+    appId: '1:861925503724:web:5ce449a223033a5a886bc9',
+    messagingSenderId: '861925503724',
+    projectId: 'cz3002-ase',
+    authDomain: 'cz3002-ase.firebaseapp.com',
+    storageBucket: 'cz3002-ase.appspot.com',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyClx-904ij2xRpp7_7jsqyFykuHxjFTF3s',
     appId: '1:861925503724:android:0be4926768ddc2d1886bc9',
     messagingSenderId: '861925503724',
     projectId: 'cz3002-ase',
     storageBucket: 'cz3002-ase.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDVh8UyAqtvvNAlBHxCVxHWscwgixDpwQk',
+    appId: '1:861925503724:ios:c4698c41dabf55bd886bc9',
+    messagingSenderId: '861925503724',
+    projectId: 'cz3002-ase',
+    storageBucket: 'cz3002-ase.appspot.com',
+    iosClientId: '861925503724-3roketkud3itheirnt61ihdg0tal771u.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterAppQuitNow',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDVh8UyAqtvvNAlBHxCVxHWscwgixDpwQk',
+    appId: '1:861925503724:ios:c4698c41dabf55bd886bc9',
+    messagingSenderId: '861925503724',
+    projectId: 'cz3002-ase',
+    storageBucket: 'cz3002-ase.appspot.com',
+    iosClientId: '861925503724-3roketkud3itheirnt61ihdg0tal771u.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterAppQuitNow',
   );
 }
