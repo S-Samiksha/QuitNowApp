@@ -60,13 +60,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _errorMessage() {
-    return Text(errorMessage == '' ? '' : 'Humm ? $errorMessage');
+    return Text(errorMessage == '' ? '' : '$errorMessage');
   }
 
   Widget _submitButton() {
     return ElevatedButton(
       onPressed:
-          isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,  
+          isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
       child: Text(isLogin ? 'Login' : 'Register'),
     );
   }
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             _entryField('Email', _controllerEmail),
             _entryField('Password', _controllerPassword),
-            _entryField('Confirm Passowrd',_controllerPassword),
+            _entryField('Confirm Passowrd', _controllerPassword),
             _errorMessage(),
             _submitButton(),
             _loginOrRegisterButton(),
