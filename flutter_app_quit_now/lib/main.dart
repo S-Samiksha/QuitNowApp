@@ -1,20 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_quit_now/pages/firestore_form_test.dart';
 import 'package:flutter_app_quit_now/widget_tree.dart';
 
 import 'firebase_options.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 }
 
-
-
 class MyApp extends StatelessWidget {
-
-  const MyApp({Key? key}) : super(key:key);
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
