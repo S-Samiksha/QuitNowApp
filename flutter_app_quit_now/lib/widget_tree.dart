@@ -2,6 +2,7 @@ import 'package:flutter_app_quit_now/auth.dart';
 import 'package:flutter_app_quit_now/pages/home_page.dart';
 import 'package:flutter_app_quit_now/pages/register.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_quit_now/pages/user_details_form.dart';
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _WidgetTreeState extends State<WidgetTree> {
         stream: Auth().authStateChanges,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return HomePage();
+            return UserDetailsForm();
           } else {
             return const LoginPage();
           }
