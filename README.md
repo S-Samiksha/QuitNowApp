@@ -1,3 +1,12 @@
+#### Allocations
+| Name | Pages |
+|:------:|:-------:|
+|Samiksha| Login, Register, Logout|
+|Ming Xuan| Password Reset|
+|Xing Kun| Wishlist|
+|Valerie | Home Page, connection to firebase|
+|Melise | wishlist, admit relapse |
+
 #### Problem 1 
 If you see an error in these few lines delete `new` (in the github its already deleted but your own side) <br>
 
