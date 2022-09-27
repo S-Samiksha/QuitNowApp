@@ -64,7 +64,7 @@ https://www.youtube.com/watch?v=ZSVnIphlGKI
 1. password to be hidden https://www.youtube.com/watch?v=8ahTwqS0J_8
 2. confirm password https://www.youtube.com/watch?v=8ahTwqS0J_8
 3. change UI to our one https://www.youtube.com/watch?v=8ahTwqS0J_8 
-4. splitting the logging in and register
+4. 
 5. make sure the form only appears after register, not after logging in (bc now it appears on both)
 6. logging out and going back to login screen
 <br>
