@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+<<<<<<< Updated upstream
 import 'package:flutter_app_quit_now/pages/register.dart';
+=======
+import 'rounded_button.dart';
+>>>>>>> Stashed changes
 import '../auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,10 +13,16 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+<<<<<<< Updated upstream
 
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = false;
+=======
+class _LoginPageState extends State<LoginPage> {
+  String? errorMessage = '';
+  bool isLogin = true;
+>>>>>>> Stashed changes
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -29,8 +39,11 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
   Widget _title() {
     return const Text('Quit Now!');
   }
@@ -51,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
     return Text(errorMessage == '' ? '' : '$errorMessage');
   }
 
+<<<<<<< Updated upstream
   Widget _submitButton() {
     return ElevatedButton(
       onPressed: signInWithEmailAndPassword,
@@ -68,6 +82,19 @@ Widget _RegisterButton() {
   }
 
 
+=======
+Widget _loginButton() {
+    return TextButton(
+      onPressed: () {
+        setState(() {
+          isLogin = !isLogin;
+        });
+      },
+      child: Text(isLogin ? 'Register instead' : 'Login instead'),
+    );
+  }
+
+>>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,12 +111,22 @@ Widget _RegisterButton() {
           children: <Widget>[
             _entryField('Email', _controllerEmail),
             _entryField('Password', _controllerPassword),
+<<<<<<< Updated upstream
             _errorMessage(),
             _submitButton(),
             _RegisterButton(),
+=======
+            _entryField('Confirm Passowrd', _controllerPassword),
+            _errorMessage(),
+            _loginButton(),
+>>>>>>> Stashed changes
           ],
         ),
       ),
     );
   }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

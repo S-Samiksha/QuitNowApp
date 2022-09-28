@@ -1,7 +1,12 @@
 import 'package:flutter_app_quit_now/auth.dart';
 import 'package:flutter_app_quit_now/pages/home_page.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:flutter_app_quit_now/pages/register.dart';
+>>>>>>> Stashed changes
 import 'package:flutter_app_quit_now/pages/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_quit_now/pages/start.dart';
 import 'package:flutter_app_quit_now/pages/user_details_form.dart';
 
 class WidgetTree extends StatefulWidget {
@@ -20,7 +25,7 @@ class _WidgetTreeState extends State<WidgetTree> {
           if (snapshot.hasData) {
             return UserDetailsForm(); //leads to the userdetails form 
           } else {
-            return const LoginPage();
+            return WelcomeScreen();
           }
         });
   }
