@@ -10,6 +10,7 @@ class RegisterPage extends StatefulWidget {
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
+
 class _RegisterPageState extends State<RegisterPage> {
   String? errorMessage = '';
   bool isLogin = true;
@@ -20,29 +21,28 @@ class _RegisterPageState extends State<RegisterPage> {
   //final TextEditingController _controllerEmail = TextEditingController();
   //final TextEditingController _controllerPassword = TextEditingController();
 
-
-Future<void> createUserWithEmailAndPassword() async {
+  Future<bool> createUserWithEmailAndPassword() async {
     try {
-       await Auth().createUserWithEmailAndPassword(
+      await Auth().createUserWithEmailAndPassword(
         email: Email,
         password: Password,
         confirmPassword: ConfirmPassword,
       );
-        
-      () => Navigator.push(context, new MaterialPageRoute(builder: (context) => new UserDetailsForm()));
-      
+      return Future.value(true);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
+      return Future.value(false);
     } catch (e) {
       print(e);
+      return Future.value(false);
     }
   }
 
-Widget _title() {
+  Widget _title() {
     return const Text('Quit Now!');
   }
 
@@ -62,25 +62,32 @@ Widget _title() {
     return Text(errorMessage == '' ? '' : '$errorMessage');
   }
 
+  bool success = false;
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed: createUserWithEmailAndPassword,
-
+      onPressed: () async => {
+        if (await createUserWithEmailAndPassword())
+          {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new UserDetailsForm()))
+          }
+      },
       child: Text("Register!"),
     );
   }
 
-Widget _RegisterButton() {
-  //do this now!!
+  Widget _RegisterButton() {
+    //do this now!!
     return ElevatedButton(
-      onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (context) => new LoginPage())),
-      child: Text("Already Have An Account? Login!"),
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const LoginPage())),
+      child: const Text("Already Have An Account? Login!"),
     );
   }
 
-
-
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -95,37 +102,38 @@ Widget _RegisterButton() {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    Email = value;
-                    //Do something with the user input.
-                  },
-                  decoration: const InputDecoration(label: Text('Email'))),
-           TextFormField(
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    Password = value;
-                    //Do something with the user input.
-                  },
-                  decoration: const InputDecoration(label: Text('Password'))),
-           TextFormField(
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ConfirmPassword = value;
-                    //Do something with the user input.
-                  },
-                  decoration: const InputDecoration(label: Text('Confirm Password')),
-                  validator: (value) {
+                keyboardType: TextInputType.emailAddress,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  Email = value;
+                  //Do something with the user input.
+                },
+                decoration: const InputDecoration(label: Text('Email'))),
+            TextFormField(
+                obscureText: true,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  Password = value;
+                  //Do something with the user input.
+                },
+                decoration: const InputDecoration(label: Text('Password'))),
+            TextFormField(
+                obscureText: true,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  ConfirmPassword = value;
+                  //Do something with the user input.
+                },
+                decoration:
+                    const InputDecoration(label: Text('Confirm Password')),
+                validator: (value) {
                   if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                  }else if (value != Password){
+                    return 'Please enter some text';
+                  } else if (value != Password) {
                     return 'Passwords do not match!';
                   }
-                return null;}
-                ),
+                  return null;
+                }),
             _errorMessage(),
             _submitButton(),
             _RegisterButton(),
@@ -134,5 +142,4 @@ Widget _RegisterButton() {
       ),
     );
   }
-
 }
