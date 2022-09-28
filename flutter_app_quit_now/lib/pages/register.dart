@@ -68,11 +68,11 @@ class _RegisterPageState extends State<RegisterPage> {
       onPressed: () async => {
         if (await createUserWithEmailAndPassword())
           {
-            Navigator.push(context,
+            Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => UserDetailsForm()))
           }
       },
-      child: Text("Register!"),
+      child: const Text("Register!"),
     );
   }
 

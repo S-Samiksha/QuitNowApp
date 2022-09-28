@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_app_quit_now/pages/home_page.dart';
 import 'package:flutter_app_quit_now/pages/register.dart';
 import '../auth.dart';
 
@@ -17,19 +18,20 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
 
-  Future<void> signInWithEmailAndPassword() async {
+  Future<bool> signInWithEmailAndPassword() async {
     try {
       await Auth().signInWithEmailAndPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
+      return Future.value(true);
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
       });
+      return Future.value(false);
     }
   }
-
 
   Widget _title() {
     return const Text('Quit Now!');
@@ -53,20 +55,25 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed: signInWithEmailAndPassword,
-      child: Text('Login!'),
+      onPressed: () async => {
+        if (await signInWithEmailAndPassword())
+          {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const HomePage()))
+          }
+      },
+      child: const Text('Login!'),
     );
   }
 
-
-Widget _RegisterButton() {
-  //do this now!!
+  Widget _RegisterButton() {
+    //do this now!!
     return ElevatedButton(
-      onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (context) => new RegisterPage())),
-      child: Text("Don't Have An Account? Register!"),
+      onPressed: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const RegisterPage())),
+      child: const Text("Don't Have An Account? Register!"),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {

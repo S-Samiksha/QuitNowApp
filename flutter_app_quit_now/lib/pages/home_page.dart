@@ -1,11 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_app_quit_now/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_quit_now/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app_quit_now/pages/login.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final User? user = Auth().currentUser;
 
   final Stream<QuerySnapshot> userDetails =
@@ -18,9 +24,17 @@ class HomePage extends StatelessWidget {
         .snapshots();
   }
 
-  Future<void> signOut() async {
-    await Auth().signOut();
-    // Navigator.popUntil(context, ModalRoute.withName("/"));
+  Future<bool> signOut() async {
+    try {
+      await Auth().signOut();
+      return Future.value(true);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      return Future.value(false);
+    } catch (e) {
+      print(e);
+      return Future.value(false);
+    }
   }
 
   Widget _title() {
@@ -45,7 +59,18 @@ class HomePage extends StatelessWidget {
 
   Widget _signOutButton() {
     return ElevatedButton(
-      onPressed: signOut,
+      onPressed: () async => {
+        if (await signOut())
+          {
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => const LoginPage()))
+            // Navigator.of(context).popUntil((route) => route.isFirst)
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => const LoginPage()))
+          }
+      },
       child: const Text('Sign Out'),
     );
   }
@@ -75,7 +100,7 @@ class HomePage extends StatelessWidget {
 
             return Text("Sticks per Day: ${data['sticksPerDay']}");
           } else {
-            return Text("Error Fetching sticksPerDay");
+            return const Text("Error Fetching sticksPerDay");
           }
         });
   }
@@ -90,7 +115,7 @@ class HomePage extends StatelessWidget {
 
             return Text("Sticks per Pack: ${data['sticksPerPack']}");
           } else {
-            return Text("Error Fetching sticksPerPack");
+            return const Text("Error Fetching sticksPerPack");
           }
         });
   }
@@ -105,7 +130,7 @@ class HomePage extends StatelessWidget {
 
             return Text("Cost Per Pack: ${data['costPerPack']}");
           } else {
-            return Text("Error Fetching costPerPack");
+            return const Text("Error Fetching costPerPack");
           }
         });
   }
