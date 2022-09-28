@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-<<<<<<< Updated upstream
 import 'package:flutter_app_quit_now/pages/user_details_form.dart';
-=======
 import 'rounded_button.dart';
->>>>>>> Stashed changes
 import '../auth.dart';
 import 'package:flutter_app_quit_now/pages/login.dart';
 
-<<<<<<< Updated upstream
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
@@ -16,33 +12,17 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 class _RegisterPageState extends State<RegisterPage> {
-=======
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({Key? key}) : super(key: key);
-
-  @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
-}
-
-class _RegistrationPageState extends State<RegistrationPage> {
->>>>>>> Stashed changes
   String? errorMessage = '';
   bool isLogin = true;
   String Email = '\0';
   String Password = '\0';
   String ConfirmPassword = '\0';
 
-<<<<<<< Updated upstream
   //final TextEditingController _controllerEmail = TextEditingController();
   //final TextEditingController _controllerPassword = TextEditingController();
 
 
-Future<void> createUserWithEmailAndPassword() async {
-=======
-  final TextEditingController _controllerEmail = TextEditingController();
-  final TextEditingController _controllerPassword = TextEditingController();
-  Future<void> createUserWithEmailAndPassword() async {
->>>>>>> Stashed changes
+Future<bool> createUserWithEmailAndPassword() async {
     try {
        await Auth().createUserWithEmailAndPassword(
         email: Email,
@@ -50,7 +30,7 @@ Future<void> createUserWithEmailAndPassword() async {
         confirmPassword: ConfirmPassword,
       );
         
-      () => Navigator.push(context, new MaterialPageRoute(builder: (context) => new UserDetailsForm()));
+      return Future.value(true);
       
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -58,8 +38,10 @@ Future<void> createUserWithEmailAndPassword() async {
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
+      return Future.value(false);
     } catch (e) {
       print(e);
+      return Future.value(false);
     }
   }
 
@@ -82,22 +64,21 @@ Widget _title() {
   Widget _errorMessage() {
     return Text(errorMessage == '' ? '' : '$errorMessage');
   }
-<<<<<<< Updated upstream
 
+  bool success = false;
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed: createUserWithEmailAndPassword,
-
-      child: Text("Register!"),
+      onPressed: () async => {
+        if (await createUserWithEmailAndPassword())
+          {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => UserDetailsForm()))
+          }
+      },
+      child: const Text("Register!"),
     );
   }
 
-Widget _RegisterButton() {
-  //do this now!!
-    return ElevatedButton(
-      onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (context) => new LoginPage())),
-      child: Text("Already Have An Account? Login!"),
-=======
  Widget _RegisterButton() {
     return TextButton(
       onPressed: () {
@@ -106,7 +87,6 @@ Widget _RegisterButton() {
         });
       },
       child: Text(isLogin ? 'Register instead' : 'Login instead'),
->>>>>>> Stashed changes
     );
   }
 
@@ -159,18 +139,11 @@ Widget _RegisterButton() {
                 return null;}
                 ),
             _errorMessage(),
-<<<<<<< Updated upstream
             _submitButton(),
-=======
->>>>>>> Stashed changes
             _RegisterButton(),
           ],
         ),
       ),
     );
   }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 }
