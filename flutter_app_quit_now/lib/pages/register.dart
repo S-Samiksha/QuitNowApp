@@ -26,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<bool> createUserWithEmailAndPassword() async {
     try {
-      if (Password.length<8){
+      if (Password.length < 8) {
         throw Exception("Password needs to be 8 Characters Long!");
       }
 
@@ -40,7 +40,6 @@ class _RegisterPageState extends State<RegisterPage> {
       if (Password != ConfirmPassword) {
         throw Exception("Passwords must match");
       }
-
 
       await Auth().createUserWithEmailAndPassword(
         email: Email,
@@ -168,16 +167,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           onChanged: (value) {
                             Email = value;
                           },
-                          decoration:
-                              const InputDecoration(label: Text('Email'))),
+                          decoration: const InputDecoration(
+                              icon: Icon(Icons.email), label: Text('Email'))),
                       TextFormField(
                           obscureText: true,
                           textAlign: TextAlign.center,
                           onChanged: (value) {
                             Password = value;
                           },
-                          decoration:
-                              const InputDecoration(label: Text('Password'))),
+                          decoration: const InputDecoration(
+                              icon: Icon(Icons.password),
+                              label: Text('Password'))),
                       TextFormField(
                           obscureText: true,
                           textAlign: TextAlign.center,
@@ -185,6 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ConfirmPassword = value;
                           },
                           decoration: const InputDecoration(
+                              icon: Icon(Icons.password),
                               label: Text('Confirm Password'))),
                       _errorMessage(),
                       const SizedBox(height: 30),
