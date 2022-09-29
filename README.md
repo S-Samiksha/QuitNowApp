@@ -45,12 +45,15 @@ When starting your vs code/android studio/vs/IDE remember to run the following:
 3. flutter pub get
    https://gist.github.com/minhcasi/2362b8ed369738cea2bf10a57ac569e1
 
+
+
 You must configure the flutterfirebase this is important!! <br>
 
 #### When configuring
 
 1. Install the flutterfire CLI following the YouTube Video: <br>
    https://www.youtube.com/watch?v=ZSVnIphlGKI
+
 
 type in the command: <br>
 flutterfire configure

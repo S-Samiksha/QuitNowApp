@@ -176,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             Password = value;
                           },
                           decoration: const InputDecoration(
-                              icon: Icon(Icons.password),
+                              icon: Icon(Icons.lock_outline),
                               label: Text('Password'))),
                       TextFormField(
                           obscureText: true,
@@ -185,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ConfirmPassword = value;
                           },
                           decoration: const InputDecoration(
-                              icon: Icon(Icons.password),
+                              icon: Icon(Icons.lock_outline),
                               label: Text('Confirm Password'))),
                       _errorMessage(),
                       const SizedBox(height: 30),

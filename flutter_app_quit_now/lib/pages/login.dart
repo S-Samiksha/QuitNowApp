@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                             Password = value;
                           },
                           decoration: const InputDecoration(
-                              icon: Icon(Icons.password),
+                              icon: Icon(Icons.lock_outline),
                               label: Text('Password'))),
                       _errorMessage(),
                       const SizedBox(height: 60),
