@@ -64,10 +64,8 @@ https://www.youtube.com/watch?v=ZSVnIphlGKI
 
 #### To be done by Samiksha(will try them soon):
 
-1. password to be hidden https://www.youtube.com/watch?v=8ahTwqS0J_8 (done)
-2. confirm password https://www.youtube.com/watch?v=8ahTwqS0J_8
-3. change UI to our one https://www.youtube.com/watch?v=8ahTwqS0J_8
-4. checking password specifications (8 characters etc. )
+1. checking password specifications (8 characters etc. )
+2. one upper case character, lower case character, a special character and a number. 
 
 
 #### Other stuff:

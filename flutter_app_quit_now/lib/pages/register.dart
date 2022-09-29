@@ -35,14 +35,10 @@ Future<bool> createUserWithEmailAndPassword() async {
       return Future.value(true);
       
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-      return Future.value(false);
-    } catch (e) {
-      print(e);
+      
+      setState(() {
+        errorMessage = e.message;
+      });
       return Future.value(false);
     }
   }
@@ -72,8 +68,7 @@ Widget _title() {
     width: 300;
     return ElevatedButton(
       onPressed: () async => {
-        if (await createUserWithEmailAndPassword())
-          {
+       if (await createUserWithEmailAndPassword()){
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => UserDetailsForm()))
           }
