@@ -26,6 +26,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<bool> createUserWithEmailAndPassword() async {
     try {
+      if (Password.length<8){
+        throw Exception("Password needs to be 8 Characters Long!");
+      }
+
       if (!RegExp(
               r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')
           .hasMatch(Password)) {
@@ -36,6 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (Password != ConfirmPassword) {
         throw Exception("Passwords must match");
       }
+
 
       await Auth().createUserWithEmailAndPassword(
         email: Email,
@@ -182,7 +187,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: const InputDecoration(
                               label: Text('Confirm Password'))),
                       _errorMessage(),
-                      const SizedBox(height: 60),
+                      const SizedBox(height: 30),
                       _submitButton(),
                       const SizedBox(height: 10),
                       _LoginButton()
