@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app_quit_now/pages/user_details_form.dart';
@@ -67,6 +69,7 @@ Widget _title() {
 
   bool success = false;
   Widget _submitButton() {
+    width: 300;
     return ElevatedButton(
       onPressed: () async => {
         if (await createUserWithEmailAndPassword())
@@ -76,17 +79,19 @@ Widget _title() {
           }
       },
       child: const Text("Register!"),
+      style: ElevatedButton.styleFrom(
+      padding: const EdgeInsets.only(left:44.0, right:44.0), ),
     );
   }
 
- Widget _RegisterButton() {
-    return TextButton(
-      onPressed: () {
-        setState(() {
-          isLogin = !isLogin;
-        });
-      },
-      child: Text(isLogin ? 'Register instead' : 'Login instead'),
+ Widget _LoginButton() {
+    width: 300;
+    return ElevatedButton(
+      onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (context) => new LoginPage())),
+      child: const Text('Login instead!'),
+      style: ElevatedButton.styleFrom(
+      padding: const EdgeInsets.only(left:30.0, right:30.0),
+    ),
     );
   }
 
@@ -102,47 +107,80 @@ Widget _title() {
         height: double.infinity,
         width: double.infinity,
         padding: const EdgeInsets.all(20),
-        child: Column(
+        color: Colors.orange[300],
+        child: SingleChildScrollView( 
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextFormField(
+            Container(
+                height: 100.0,
+                width: 100.0,
+                // ignore: unnecessary_new
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                    image: DecorationImage(
+                        image: new AssetImage('assets/images/arrowdown.png'),
+                        fit: BoxFit.cover,
+                        opacity: 0.6,
+                        
+                    ),
+                    shape: BoxShape.circle,
+                    ),
+                ),
+            const SizedBox(height: 10),
+            const Text("Register", style: TextStyle(fontSize: 25, fontFamily:'Indies'),),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(20),
+              height: 400,
+             decoration: BoxDecoration(
+              color: Color.fromARGB(241,250,250,250),
+              border: Border.all(
+                color: Color.fromARGB(241, 250, 250, 250),
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(20))
+            ),
+              child: SingleChildScrollView( child:Column(children: <Widget>[
+                TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
-                  onChanged: (value) {
+                  onChanged: (value){
                     Email = value;
-                    //Do something with the user input.
                   },
-                  decoration: const InputDecoration(label: Text('Email'))),
-           TextFormField(
+                  decoration: const InputDecoration(label: Text('Email'))
+                  
+                ),
+                TextFormField(
                   obscureText: true,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     Password = value;
-                    //Do something with the user input.
                   },
-                  decoration: const InputDecoration(label: Text('Password'))),
-           TextFormField(
+                  decoration: const InputDecoration(label: Text('Password'))
+              ),
+              TextFormField(
                   obscureText: true,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ConfirmPassword = value;
-                    //Do something with the user input.
                   },
-                  decoration: const InputDecoration(label: Text('Confirm Password')),
-                  validator: (value) {
-                  if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                  }else if (value != Password){
-                    return 'Passwords do not match!';
-                  }
-                return null;}
-                ),
-            _errorMessage(),
-            _submitButton(),
-            _RegisterButton(),
+                  decoration: const InputDecoration(label: Text('Confirm Password'))
+              ),
+              _errorMessage(), 
+              const SizedBox(height:60),
+              _submitButton(),
+              const SizedBox(height:10),
+              _LoginButton()
+              ],
+              
+            ),
+          
+          ),
+          )
           ],
         ),
+      ),
       ),
     );
   }

@@ -64,13 +64,17 @@ https://www.youtube.com/watch?v=ZSVnIphlGKI
 
 #### To be done by Samiksha(will try them soon):
 
-1. password to be hidden https://www.youtube.com/watch?v=8ahTwqS0J_8
+1. password to be hidden https://www.youtube.com/watch?v=8ahTwqS0J_8 (done)
 2. confirm password https://www.youtube.com/watch?v=8ahTwqS0J_8
 3. change UI to our one https://www.youtube.com/watch?v=8ahTwqS0J_8
-4. make sure the form only appears after register, not after logging in (bc now it appears on both) (val done)
-5. logging out and going back to login screen (val done, can remove these points if u want)
+4. checking password specifications (8 characters etc. )
 
-for now, if you press the sign out button, it will sign u out on firebase, it just doesnt go back to the screen. So what I do if I want to go back to the login screen is:
 
-1. I press the sign out button (though there will be no feedback on the UI, but u can see from the debug console that you got logged out)
-2. I restart the app (like must legit stop n start n wait again) then it will go back to logout
+#### Other stuff:
+1. There is a load time in retrieving the data where it will show the error fetching ....
+2. Cannot click backspace 
+3. Bottom Overflow (solved but for those also experiencing the same thing --> SingleChildScrollView) 
+https://flutter-examples.com/flutter-bottom-overflowed-by-pixels-keyboard/ 
+
+#### for testing purposes
+for userone usertwo userthree@test.com the password is all 123456, 
