@@ -1,7 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_quit_now/pages/firestore_form_test.dart';
+import 'package:flutter_app_quit_now/pages/start.dart';
+import 'package:flutter_app_quit_now/pages/user_details_form.dart';
 import 'package:flutter_app_quit_now/widget_tree.dart';
+import 'package:flutter_app_quit_now/pages/login.dart';
+import 'package:flutter_app_quit_now/pages/register.dart';
 
 import 'firebase_options.dart';
 
@@ -32,7 +36,15 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.orange,
       ),
-      home: const WidgetTree(),
+      initialRoute: 'start',
+      routes: {
+        //'welcome_screen': (context) => WelcomeScreen(),
+        'register': (context) => RegisterPage(),
+        'login': (context) => LoginPage(),
+        //'home_screen': (context) => HomeScreen()
+        'user_details_form': (context) => UserDetailsForm(),
+        'start': (context) => WelcomeScreen(),
+      },
     );
   }
 }

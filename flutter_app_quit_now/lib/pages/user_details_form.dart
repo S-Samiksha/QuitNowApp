@@ -5,15 +5,52 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app_quit_now/pages/home_page.dart';
 
 class UserDetailsForm extends StatelessWidget {
+  const UserDetailsForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tell us more about you!')),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [const MyCustomForm()],
+      appBar: AppBar(title: const Text('')),
+      // body: Padding(
+      //   padding: const EdgeInsets.all(20.0),
+      //   child: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.start,
+      //     children: const [MyCustomForm()],
+      //   ),
+      // ),
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        color: Colors.orange[300],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 80),
+              const Text(
+                "Tell us more about you",
+                style: TextStyle(fontSize: 25, fontFamily: 'Indies'),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(20),
+                height: 400,
+                decoration: BoxDecoration(
+                    color: Color.fromARGB(241, 250, 250, 250),
+                    border: Border.all(
+                      color: Color.fromARGB(241, 250, 250, 250),
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: const [MyCustomForm()],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -51,6 +88,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
         children: <Widget>[
           TextFormField(
               decoration: const InputDecoration(
+                icon: Icon(Icons.person),
                 labelText: 'Name',
               ),
               onChanged: (value) {
@@ -64,7 +102,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
               }),
           TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Sticks per Day',
+                icon: Icon(Icons.smoking_rooms),
+                labelText: 'Sticks Smoked per Day',
               ),
               onChanged: (value) {
                 sticksPerDay = int.parse(value);
@@ -77,7 +116,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
               }),
           TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Cost per Pack',
+                icon: Icon(Icons.attach_money),
+                labelText: 'Cost of One Pack',
               ),
               onChanged: (value) {
                 costPerPack = int.parse(value);
@@ -90,7 +130,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
               }),
           TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Sticks per Pack',
+                icon: Icon(Icons.shopping_cart_sharp),
+                labelText: 'Sticks in One Pack',
               ),
               onChanged: (value) {
                 sticksPerPack = int.parse(value);
@@ -103,6 +144,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
               }),
           TextFormField(
               decoration: const InputDecoration(
+                icon: Icon(Icons.calendar_month_sharp),
                 labelText: 'Quit Date',
               ),
               onChanged: (value) {
@@ -138,8 +180,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       .catchError(
                           (error) => print('Failed to add details: $error'));
 
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
                 }
               },
               child: const Text('Submit'),

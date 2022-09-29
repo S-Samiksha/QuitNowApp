@@ -1,7 +1,9 @@
 import 'package:flutter_app_quit_now/auth.dart';
 import 'package:flutter_app_quit_now/pages/home_page.dart';
 import 'package:flutter_app_quit_now/pages/register.dart';
+import 'package:flutter_app_quit_now/pages/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_quit_now/pages/start.dart';
 import 'package:flutter_app_quit_now/pages/user_details_form.dart';
 
 class WidgetTree extends StatefulWidget {
@@ -18,9 +20,9 @@ class _WidgetTreeState extends State<WidgetTree> {
         stream: Auth().authStateChanges,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return UserDetailsForm();
+            return HomePage();
           } else {
-            return const LoginPage();
+            return WelcomeScreen();
           }
         });
   }
