@@ -65,14 +65,19 @@ https://www.youtube.com/watch?v=ZSVnIphlGKI
 #### To be done by Samiksha(will try them soon):
 
 1. checking password specifications (8 characters etc. )
-2. one upper case character, lower case character, a special character and a number. 
+2. one upper case character, lower case character, a special character and a number.
 
+#### To be done by Valerie:
+
+1. Homepage UI
+2. Calendar picker for user form quit date
 
 #### Other stuff:
-1. There is a load time in retrieving the data where it will show the error fetching ....
-2. Cannot click backspace 
-3. Bottom Overflow (solved but for those also experiencing the same thing --> SingleChildScrollView) 
-https://flutter-examples.com/flutter-bottom-overflowed-by-pixels-keyboard/ 
+
+1. Cannot click backspace
+2. Bottom Overflow (solved but for those also experiencing the same thing --> SingleChildScrollView)
+   https://flutter-examples.com/flutter-bottom-overflowed-by-pixels-keyboard/
 
 #### for testing purposes
-for userone usertwo userthree@test.com the password is all 123456, 
+
+for userone usertwo userthree@test.com the password is all 123456,
