@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
 
             return Text("Quit Date: ${data['quitDate']}");
           } else {
-            return Text("Error Fetching Quit Date");
+            return Text("Loading...");
           }
         });
   }
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
 
             return Text("Sticks per Day: ${data['sticksPerDay']}");
           } else {
-            return const Text("Error Fetching sticksPerDay");
+            return const Text("Loading...");
           }
         });
   }
@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
 
             return Text("Sticks per Pack: ${data['sticksPerPack']}");
           } else {
-            return const Text("Error Fetching sticksPerPack");
+            return const Text("Loading...");
           }
         });
   }
@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
 
             return Text("Cost Per Pack: ${data['costPerPack']}");
           } else {
-            return const Text("Error Fetching costPerPack");
+            return const Text("Loading...");
           }
         });
   }
