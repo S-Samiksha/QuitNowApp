@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_quit_now/pages/firestore_form_test.dart';
+import 'package:flutter_app_quit_now/pages/navpage.dart';
 import 'package:flutter_app_quit_now/pages/start.dart';
 import 'package:flutter_app_quit_now/pages/user_details_form.dart';
 import 'package:flutter_app_quit_now/widget_tree.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
         //'home_screen': (context) => HomeScreen()
         'user_details_form': (context) => UserDetailsForm(),
         'start': (context) => WelcomeScreen(),
-        'admit relapse': (context) =>AdmitRelapsePage(),
+        'admit relapse': (context) => AdmitRelapsePage(),
       },
     );
   }

@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
 
             return Text("Welcome ${data['name']}");
           } else {
-            return Text("Welcome");
+            return const Text("Welcome");
           }
         });
   }
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
 
             return Text("Quit Date: ${data['quitDate']}");
           } else {
-            return Text("Loading...");
+            return const Text("Loading...");
           }
         });
   }
@@ -140,35 +140,23 @@ class _HomePageState extends State<HomePage> {
   Widget _admitRelapseButton() {
     //do this now!!
     return ElevatedButton(
-      onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AdmitRelapsePage())),
-      child: Text("Admit Relapse"),
+      onPressed: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const AdmitRelapsePage())),
+      child: const Text("Admit Relapse"),
     );
   }
 
   Widget _wishlistButton() {
     return ElevatedButton(
-      onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => WishlistPage())),
-      child: Text("Wishlist"),
+      onPressed: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const WishlistPage())),
+      child: const Text("Wishlist"),
     );
-  }
-
-  //for bottom navigation bar
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -189,25 +177,6 @@ class _HomePageState extends State<HomePage> {
             _wishlistButton(),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromARGB(255, 248, 204, 137),
-        elevation: 8,
-        iconSize: 20,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_task_rounded),
-            label: 'Wishlist',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emergency),
-            label: 'Admit Relapse',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

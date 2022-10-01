@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_quit_now/pages/navpage.dart';
 import 'package:flutter_app_quit_now/pages/register.dart';
 import 'rounded_button.dart';
 import 'package:flutter_app_quit_now/pages/home_page.dart';
@@ -63,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
         if (await signInWithEmailAndPassword())
           {
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const HomePage()))
+                MaterialPageRoute(builder: (context) => const NavPage()))
           }
       },
       child: const Text('Login!'),

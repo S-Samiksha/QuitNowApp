@@ -15,12 +15,6 @@ class WishlistPage extends StatefulWidget {
 }
 
 class _WishlistPageState extends State<WishlistPage> {
-
-  Widget _title() {
-    return const Text('Your Wish List');
-  }
-
-
   Widget _addButton() {
     //do this now!!
     return ElevatedButton(
@@ -39,13 +33,9 @@ class _WishlistPageState extends State<WishlistPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -59,25 +49,6 @@ class _WishlistPageState extends State<WishlistPage> {
             _addButton(),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromARGB(255, 248, 204, 137),
-        elevation: 8,
-        iconSize: 20,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'HomePage',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emergency),
-            label: 'Admit Relapse',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

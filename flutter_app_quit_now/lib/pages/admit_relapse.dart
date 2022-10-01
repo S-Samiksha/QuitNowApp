@@ -18,10 +18,6 @@ class _AdmitRelapsePageState extends State<AdmitRelapsePage> {
   // List sticks1 = ["1", "2", "3", "4", "5"];
   //String selectedItem;
 
-  Widget _title() {
-    return const Text('Admit Relapse');
-  }
-
   Widget _admitButton() {
     return ElevatedButton(
       onPressed: () => Navigator.push(
@@ -50,9 +46,6 @@ class _AdmitRelapsePageState extends State<AdmitRelapsePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -90,25 +83,6 @@ class _AdmitRelapsePageState extends State<AdmitRelapsePage> {
             // ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromARGB(255, 248, 204, 137),
-        elevation: 8,
-        iconSize: 20,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_task_rounded),
-            label: 'Wishlist',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Home Page',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
       ),
     );
   }
