@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_quit_now/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app_quit_now/pages/Wishlist.dart';
+import 'package:flutter_app_quit_now/pages/admit_relapse.dart';
 import 'package:flutter_app_quit_now/pages/login.dart';
 
 class HomePage extends StatefulWidget {
@@ -135,6 +137,32 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+  Widget _admitRelapseButton() {
+    //do this now!!
+    return ElevatedButton(
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AdmitRelapsePage())),
+      child: Text("Admit Relapse"),
+    );
+  }
+
+  Widget _wishlistButton() {
+    return ElevatedButton(
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => WishlistPage())),
+      child: Text("Wishlist"),
+    );
+  }
+
+  //for bottom navigation bar
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,8 +183,31 @@ class _HomePageState extends State<HomePage> {
             _costPerPack(),
             _sticksPerPack(),
             _signOutButton(),
+            const SizedBox(height: 10),
+            _admitRelapseButton(),
+            const SizedBox(height: 20),
+            _wishlistButton(),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color.fromARGB(255, 248, 204, 137),
+        elevation: 8,
+        iconSize: 20,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_task_rounded),
+            label: 'Wishlist',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.emergency),
+            label: 'Admit Relapse',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
