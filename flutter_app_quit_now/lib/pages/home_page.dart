@@ -39,6 +39,126 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Widget _welcomeBackText() {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: provideDocumentFieldStream(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            final data = snapshot.requireData;
+
+            return Text("Welcome back ${data['name']}!",
+                style: const TextStyle(fontSize: 25, fontFamily: 'Indies'));
+          } else {
+            return const Text("Welcome back!",
+                style: TextStyle(fontSize: 25, fontFamily: 'Indies'));
+          }
+        });
+  }
+
+  Widget _journeyStartedText() {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: provideDocumentFieldStream(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            final data = snapshot.requireData;
+
+            return Text("Your journey started on: ${data['quitDate']}",
+                style: const TextStyle(fontSize: 18, fontFamily: 'Indies'));
+          } else {
+            return const Text("Loading",
+                style: TextStyle(fontSize: 25, fontFamily: 'Indies'));
+          }
+        });
+  }
+
+  double containerWidth = 500;
+
+  Widget _journeyStarted() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      height: 160,
+      width: containerWidth,
+      decoration: BoxDecoration(
+          color: Color.fromARGB(241, 250, 250, 250),
+          border: Border.all(
+            color: Color.fromARGB(241, 250, 250, 250),
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 100.0,
+              width: 100.0,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                image: DecorationImage(
+                  // TODO: help none of my images appear
+                  image: AssetImage('assets/images/quitsmoking.png'),
+                  fit: BoxFit.cover,
+                ),
+                shape: BoxShape.circle,
+              ),
+            ),
+            const SizedBox(height: 10),
+            _journeyStartedText()
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Container(
+      height: double.infinity,
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      color: Colors.orange[300],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _welcomeBackText(),
+            const SizedBox(height: 20),
+            _journeyStarted()
+          ],
+        ),
+      ),
+    ));
+  }
+}
+
+class _HomePageStateTwo extends State<HomePage> {
+  final User? user = Auth().currentUser;
+
+  final Stream<QuerySnapshot> userDetails =
+      FirebaseFirestore.instance.collection('userdetails').snapshots();
+
+  Stream<DocumentSnapshot> provideDocumentFieldStream() {
+    return FirebaseFirestore.instance
+        .collection('userdetails')
+        .doc(user?.uid)
+        .snapshots();
+  }
+
+  Future<bool> signOut() async {
+    try {
+      await Auth().signOut();
+      return Future.value(true);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      return Future.value(false);
+    } catch (e) {
+      print(e);
+      return Future.value(false);
+    }
+  }
+
   Widget _title() {
     return StreamBuilder<DocumentSnapshot>(
         stream: provideDocumentFieldStream(),
@@ -49,7 +169,7 @@ class _HomePageState extends State<HomePage> {
 
             return Text("Welcome ${data['name']}");
           } else {
-            return const Text("Welcome");
+            return Text("Welcome");
           }
         });
   }
@@ -87,7 +207,7 @@ class _HomePageState extends State<HomePage> {
 
             return Text("Quit Date: ${data['quitDate']}");
           } else {
-            return const Text("Loading...");
+            return Text("Loading...");
           }
         });
   }
@@ -140,23 +260,35 @@ class _HomePageState extends State<HomePage> {
   Widget _admitRelapseButton() {
     //do this now!!
     return ElevatedButton(
-      onPressed: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const AdmitRelapsePage())),
-      child: const Text("Admit Relapse"),
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AdmitRelapsePage())),
+      child: Text("Admit Relapse"),
     );
   }
 
   Widget _wishlistButton() {
     return ElevatedButton(
-      onPressed: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const WishlistPage())),
-      child: const Text("Wishlist"),
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => WishlistPage())),
+      child: Text("Wishlist"),
     );
+  }
+
+  //for bottom navigation bar
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: _title(),
+      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -177,6 +309,25 @@ class _HomePageState extends State<HomePage> {
             _wishlistButton(),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color.fromARGB(255, 248, 204, 137),
+        elevation: 8,
+        iconSize: 20,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_task_rounded),
+            label: 'Wishlist',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.emergency),
+            label: 'Admit Relapse',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
