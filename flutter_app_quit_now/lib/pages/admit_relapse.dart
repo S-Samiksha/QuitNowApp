@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_quit_now/auth.dart';
@@ -17,6 +19,39 @@ class _AdmitRelapsePageState extends State<AdmitRelapsePage> {
   var sticks = ' ';
   // List sticks1 = ["1", "2", "3", "4", "5"];
   //String selectedItem;
+  final User? user = Auth().currentUser;
+
+  final Stream<QuerySnapshot> userDetails =
+      FirebaseFirestore.instance.collection('userdetails').snapshots();
+
+  Stream<DocumentSnapshot> provideDocumentFieldStream() {
+    return FirebaseFirestore.instance
+        .collection('userdetails')
+        .doc(user?.uid)
+        .snapshots();
+  }
+
+//calculate current streak
+//still need to work on parsing the string date into the required format
+  Widget _streak() {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: provideDocumentFieldStream(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            final data = snapshot.requireData;
+            final date = DateTime(2022, 09,
+                01); //date stores the quit date --> hard code to 1oct first
+            final currentDate = DateTime.now();
+            final difference = currentDate.difference(date).inDays;
+            return Text("streak: ${difference}");
+
+            //return Text("Quit Date: ${data['quitDate']}");
+          } else {
+            return Text("Loading...");
+          }
+        });
+  }
 
   Widget _title() {
     return const Text('Admit Relapse');
@@ -26,15 +61,33 @@ class _AdmitRelapsePageState extends State<AdmitRelapsePage> {
     return ElevatedButton(
       onPressed: () => Navigator.push(
           context, MaterialPageRoute(builder: (context) => const HomePage())),
-      child: Text("Admit"),
+      child: const Text("Admit"),
     );
   }
+
+  // Widget _admitButton() {
+  //   width:
+  //   300;
+  //   return ElevatedButton(
+  //     onPressed: () async => {
+  //       if (await resetStreak())
+  //         {
+  //           Navigator.pushReplacement(context,
+  //               MaterialPageRoute(builder: (context) => const HomePage()))
+  //         }
+  //     },
+  //     child: const Text("Admit"),
+  //     style: ElevatedButton.styleFrom(
+  //       padding: const EdgeInsets.only(left: 44.0, right: 44.0),
+  //     ),
+  //   );
+  // }
 
   Widget _wishlistButton() {
     return ElevatedButton(
       onPressed: () => Navigator.push(
           context, MaterialPageRoute(builder: (context) => WishlistPage())),
-      child: Text("Wishlist"),
+      child: const Text("Wishlist"),
     );
   }
 
@@ -76,6 +129,7 @@ class _AdmitRelapsePageState extends State<AdmitRelapsePage> {
                   }
                   return null;
                 }),
+            _streak(),
             const SizedBox(height: 10),
             _admitButton(),
             const SizedBox(height: 20),
@@ -113,3 +167,39 @@ class _AdmitRelapsePageState extends State<AdmitRelapsePage> {
     );
   }
 }
+//why doesn't this work :(
+// class AdmitForm extends StatefulWidget {
+//   const AdmitForm({super.key});
+
+//   @override
+//   State<AdmitForm> createState() => _AdmitFormState();
+// }
+
+// class _AdmitFormState extends State<AdmitForm> {
+//   final _formKey = GlobalKey<FormState>();
+//   var sticks = ' ';
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Form(
+//         key: _formKey,
+//         child: Column(
+//           children: <Widget>[
+//             TextFormField(
+//                 decoration: const InputDecoration(
+//                   icon: Icon(Icons.format_list_numbered),
+//                   labelText: 'Input Number of sticks smoked today:',
+//                 ),
+//                 onChanged: (value) {
+//                   sticks = value;
+//                 },
+//                 validator: (value) {
+//                   if (value == null || value.isEmpty) {
+//                     return "Please enter some number";
+//                   }
+//                   return null;
+//                 }),
+//           ],
+//         ));
+//   }
+// }
