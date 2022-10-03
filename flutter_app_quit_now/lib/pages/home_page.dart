@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app_quit_now/pages/Wishlist.dart';
 import 'package:flutter_app_quit_now/pages/admit_relapse.dart';
 import 'package:flutter_app_quit_now/pages/login.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,21 +41,27 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _signOutButton() {
-    return ElevatedButton(
-      onPressed: () async => {
-        if (await signOut())
-          {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => const LoginPage()))
-            // Navigator.of(context).popUntil((route) => route.isFirst)
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => const LoginPage()))
-          }
-      },
-      child: const Text('Sign Out'),
-    );
+    return SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+            onPressed: () async => {
+                  if (await signOut())
+                    {
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => const LoginPage()))
+                      // Navigator.of(context).popUntil((route) => route.isFirst)
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  const LoginPage()))
+                    }
+                },
+            style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(Colors.red),
+            ),
+            child:
+                const Text('Sign Out', style: TextStyle(color: Colors.white))));
   }
 
   Widget _welcomeBackText() {
@@ -95,6 +102,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _daysSinceCommitmentText() {
+    int daysBetween(DateTime from, DateTime to) {
+      from = DateTime(from.year, from.month, from.day);
+      to = DateTime(to.year, to.month, to.day);
+      return (to.difference(from).inHours / 24).round();
+    }
+
     return StreamBuilder<DocumentSnapshot>(
         stream: provideDocumentFieldStream(),
         builder:
@@ -102,9 +115,14 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             final data = snapshot.requireData;
             // do calculation here
+            String quitDate = data['quitDate'];
+            var formatter = DateFormat('MMM dd, yyyy');
+            var formattedDate = formatter.parse(quitDate);
+            final todaysDate = DateTime.now();
+            final difference = daysBetween(formattedDate, todaysDate);
 
-            return const Text("25",
-                style: TextStyle(
+            return Text(difference.toString(),
+                style: const TextStyle(
                     fontSize: 50,
                     fontFamily: 'Indies',
                     fontWeight: FontWeight.bold));
