@@ -181,7 +181,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         'sticksPerDay': sticksPerDay,
                         'costPerPack': costPerPack,
                         'sticksPerPack': sticksPerPack,
-                        'quitDate': quitDate
+                        'quitDate': quitDate,
+                        'lastRelapse': quitDate
                       }) // this will add if ID does not exist, update if it does
                       .then((value) => print('Details Added'))
                       .catchError(

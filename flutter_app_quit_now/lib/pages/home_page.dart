@@ -226,7 +226,7 @@ class _HomePageState extends State<HomePage> {
           border: Border.all(
             color: Colors.white,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -236,7 +236,6 @@ class _HomePageState extends State<HomePage> {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 image: DecorationImage(
-                  // TODO: help none of my images appear
                   image: AssetImage('assets/images/quitsmoking.png'),
                   fit: BoxFit.cover,
                 ),
