@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app_quit_now/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app_quit_now/pages/home_page.dart';
+import 'package:intl/intl.dart';
+
+import 'navpage.dart';
 
 class UserDetailsForm extends StatelessWidget {
   const UserDetailsForm({super.key});
@@ -75,6 +78,41 @@ class _MyCustomFormState extends State<MyCustomForm> {
   var costPerPack = 0;
   var sticksPerPack = 0;
   var quitDate = '';
+  DateTime todaysDate = DateTime.now();
+  DateTime pickedDate = DateTime.now();
+  var formatter = DateFormat('MMM dd, yyyy');
+
+  Widget chooseDate() {
+    // String todaysDate = formatter.format(date);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        const Icon(Icons.calendar_month_sharp, color: Colors.grey),
+        const SizedBox(width: 20),
+        Text("${pickedDate.year}-${pickedDate.month}-${pickedDate.day}",
+            style: const TextStyle(fontSize: 15, fontFamily: 'Indies')),
+        const SizedBox(width: 20),
+        SizedBox(
+            width: 170,
+            child: ElevatedButton(
+                onPressed: () async {
+                  DateTime? newDate = await showDatePicker(
+                      context: context,
+                      initialDate: pickedDate,
+                      firstDate: DateTime(2010),
+                      lastDate: todaysDate);
+
+                  if (newDate == null) return;
+
+                  setState(() => pickedDate = newDate);
+                  setState(() => quitDate = formatter.format(newDate));
+                },
+                child: const Text("Select Quit Date",
+                    style: TextStyle(fontSize: 13, fontFamily: 'Indies'))))
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +126,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
         children: <Widget>[
           TextFormField(
               decoration: const InputDecoration(
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.person, color: Colors.grey),
                 labelText: 'Name',
               ),
               onChanged: (value) {
@@ -102,7 +140,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
               }),
           TextFormField(
               decoration: const InputDecoration(
-                icon: Icon(Icons.smoking_rooms),
+                icon: Icon(Icons.smoking_rooms, color: Colors.grey),
                 labelText: 'Sticks Smoked per Day',
               ),
               onChanged: (value) {
@@ -116,7 +154,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
               }),
           TextFormField(
               decoration: const InputDecoration(
-                icon: Icon(Icons.attach_money),
+                icon: Icon(Icons.attach_money, color: Colors.grey),
                 labelText: 'Cost of One Pack',
               ),
               onChanged: (value) {
@@ -130,7 +168,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
               }),
           TextFormField(
               decoration: const InputDecoration(
-                icon: Icon(Icons.shopping_cart_sharp),
+                icon: Icon(Icons.shopping_cart_sharp, color: Colors.grey),
                 labelText: 'Sticks in One Pack',
               ),
               onChanged: (value) {
@@ -142,22 +180,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 }
                 return null;
               }),
-          TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.calendar_month_sharp),
-                labelText: 'Quit Date',
-              ),
-              onChanged: (value) {
-                quitDate = value;
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              }),
           const SizedBox(height: 10),
-          Center(
+          chooseDate(),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -180,10 +207,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       .catchError(
                           (error) => print('Failed to add details: $error'));
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => const NavPage()));
                 }
               },
               child: const Text('Submit'),

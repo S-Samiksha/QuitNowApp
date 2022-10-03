@@ -39,6 +39,24 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Widget _signOutButton() {
+    return ElevatedButton(
+      onPressed: () async => {
+        if (await signOut())
+          {
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => const LoginPage()))
+            // Navigator.of(context).popUntil((route) => route.isFirst)
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => const LoginPage()))
+          }
+      },
+      child: const Text('Sign Out'),
+    );
+  }
+
   Widget _welcomeBackText() {
     return StreamBuilder<DocumentSnapshot>(
         stream: provideDocumentFieldStream(),
@@ -48,7 +66,10 @@ class _HomePageState extends State<HomePage> {
             final data = snapshot.requireData;
 
             return Text("Welcome back ${data['name']}!",
-                style: const TextStyle(fontSize: 25, fontFamily: 'Indies'));
+                style: const TextStyle(
+                    fontSize: 25,
+                    fontFamily: 'Indies',
+                    fontWeight: FontWeight.bold));
           } else {
             return const Text("Welcome back!",
                 style: TextStyle(fontSize: 25, fontFamily: 'Indies'));
@@ -68,7 +89,49 @@ class _HomePageState extends State<HomePage> {
                 style: const TextStyle(fontSize: 18, fontFamily: 'Indies'));
           } else {
             return const Text("Loading",
-                style: TextStyle(fontSize: 25, fontFamily: 'Indies'));
+                style: TextStyle(fontSize: 18, fontFamily: 'Indies'));
+          }
+        });
+  }
+
+  Widget _daysSinceCommitmentText() {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: provideDocumentFieldStream(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            final data = snapshot.requireData;
+            // do calculation here
+
+            return const Text("25",
+                style: TextStyle(
+                    fontSize: 50,
+                    fontFamily: 'Indies',
+                    fontWeight: FontWeight.bold));
+          } else {
+            return const Text("Loading",
+                style: TextStyle(fontSize: 18, fontFamily: 'Indies'));
+          }
+        });
+  }
+
+  Widget _currentStreakText() {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: provideDocumentFieldStream(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            final data = snapshot.requireData;
+            // do calculation here
+            int test = 2;
+            return Text("Current streak: ${test} Days",
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'Indies',
+                ));
+          } else {
+            return const Text("Loading",
+                style: TextStyle(fontSize: 18, fontFamily: 'Indies'));
           }
         });
   }
@@ -110,6 +173,64 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _daysSinceCommitment() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      height: 110,
+      width: containerWidth,
+      decoration: BoxDecoration(
+          color: Color.fromARGB(241, 250, 250, 250),
+          border: Border.all(
+            color: Color.fromARGB(241, 250, 250, 250),
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            _daysSinceCommitmentText(),
+            const Text("Total number of days since commitment",
+                style: TextStyle(fontSize: 18, fontFamily: 'Indies'))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _currentStreak() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      height: 160,
+      width: containerWidth,
+      decoration: BoxDecoration(
+          color: Color.fromARGB(241, 250, 250, 250),
+          border: Border.all(
+            color: Color.fromARGB(241, 250, 250, 250),
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 100.0,
+              width: 100.0,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                image: DecorationImage(
+                  // TODO: help none of my images appear
+                  image: AssetImage('assets/images/quitsmoking.png'),
+                  fit: BoxFit.cover,
+                ),
+                shape: BoxShape.circle,
+              ),
+            ),
+            const SizedBox(height: 10),
+            _currentStreakText()
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,8 +245,14 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _welcomeBackText(),
-            const SizedBox(height: 20),
-            _journeyStarted()
+            const SizedBox(height: 10),
+            _journeyStarted(),
+            const SizedBox(height: 10),
+            _daysSinceCommitment(),
+            const SizedBox(height: 10),
+            _currentStreak(),
+            const SizedBox(height: 10),
+            _signOutButton()
           ],
         ),
       ),
@@ -133,6 +260,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+// old code
 class _HomePageStateTwo extends State<HomePage> {
   final User? user = Auth().currentUser;
 
