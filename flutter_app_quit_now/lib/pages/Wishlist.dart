@@ -107,6 +107,18 @@ class _WishlistPageState extends State<WishlistPage> {
     );
   }
 
+  final User? user = Auth().currentUser;
+
+  final Stream<QuerySnapshot> userDetails =
+      FirebaseFirestore.instance.collection('userdetails').snapshots();
+
+  Stream<DocumentSnapshot> provideDocumentFieldStream() {
+    return FirebaseFirestore.instance
+        .collection('userdetails')
+        .doc(user?.uid)
+        .snapshots();
+  }
+
   Widget _title() {
     return const Text('Your Wish List');
   }
@@ -120,18 +132,26 @@ class _WishlistPageState extends State<WishlistPage> {
     todos = ["Hello", "Hey There"];
   }
 
-  createToDo() {
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection("MyTodos").doc(title);
+  // createToDo() {
+  //   DocumentReference documentReference =
+  //       FirebaseFirestore.instance.collection("MyTodos").doc(title);
 
-    Map<String, String> todoList = {
-      "todoTitle": title,
-      "todoDesc": description
-    };
+  //   Map<String, String> todoList = {
+  //     "todoTitle": title,
+  //     "todoDesc": description
+  //   };
 
-    documentReference
-        .set(todoList)
-        .whenComplete(() => print("Data stored successfully"));
+  //   documentReference
+  //       .set(todoList)
+  //       .whenComplete(() => print("Data stored successfully"));
+  // }
+  Future<String?> createToDo({String? uid}) async {
+    CollectionReference userDetails =
+        FirebaseFirestore.instance.collection('userdetails');
+    userDetails
+        .doc(user?.uid) //how to retrieve the id...
+        .collection('Wishlist')
+        .add({'todoTitle': title, 'todoDesc': description});
   }
 
   deleteTodo(item) {
@@ -142,6 +162,7 @@ class _WishlistPageState extends State<WishlistPage> {
         .delete()
         .whenComplete(() => print("deleted successfully"));
   }
+
 
   //for bottom navigation bar
   int _selectedIndex = 0;
@@ -180,18 +201,24 @@ class _WishlistPageState extends State<WishlistPage> {
                 return AlertDialog(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  title: const Text("Add Todo"),
+                  title: const Text("Add Item"),
                   content: Container(
                     width: 400,
-                    height: 100,
+                    height: 200,
                     child: Column(
                       children: [
                         TextField(
+                          decoration: const InputDecoration(
+                            labelText: 'Item name',
+                          ),
                           onChanged: (String value) {
                             title = value;
                           },
                         ),
                         TextField(
+                          decoration: const InputDecoration(
+                            labelText: 'Item price',
+                          ),
                           onChanged: (String value) {
                             description = value;
                           },
