@@ -125,61 +125,41 @@ class _MyCustomFormState extends State<MyCustomForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.person, color: Colors.grey),
-                labelText: 'Name',
-              ),
-              onChanged: (value) {
-                name = value;
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter some text";
-                }
-                return null;
-              }),
+            decoration: const InputDecoration(
+              icon: Icon(Icons.person, color: Colors.grey),
+              labelText: 'Name',
+            ),
+            onChanged: (value) {
+              name = value;
+            },
+          ),
           TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.smoking_rooms, color: Colors.grey),
-                labelText: 'Sticks Smoked per Day',
-              ),
-              onChanged: (value) {
-                sticksPerDay = int.parse(value);
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              }),
+            decoration: const InputDecoration(
+              icon: Icon(Icons.smoking_rooms, color: Colors.grey),
+              labelText: 'Sticks Smoked per Day',
+            ),
+            onChanged: (value) {
+              sticksPerDay = int.parse(value);
+            },
+          ),
           TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.attach_money, color: Colors.grey),
-                labelText: 'Cost of One Pack',
-              ),
-              onChanged: (value) {
-                costPerPack = int.parse(value);
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              }),
+            decoration: const InputDecoration(
+              icon: Icon(Icons.attach_money, color: Colors.grey),
+              labelText: 'Cost of One Pack',
+            ),
+            onChanged: (value) {
+              costPerPack = int.parse(value);
+            },
+          ),
           TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.shopping_cart_sharp, color: Colors.grey),
-                labelText: 'Sticks in One Pack',
-              ),
-              onChanged: (value) {
-                sticksPerPack = int.parse(value);
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              }),
+            decoration: const InputDecoration(
+              icon: Icon(Icons.shopping_cart_sharp, color: Colors.grey),
+              labelText: 'Sticks in One Pack',
+            ),
+            onChanged: (value) {
+              sticksPerPack = int.parse(value);
+            },
+          ),
           const SizedBox(height: 10),
           chooseDate(),
           const SizedBox(height: 10),

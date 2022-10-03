@@ -101,13 +101,13 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  Widget _daysSinceCommitmentText() {
-    int daysBetween(DateTime from, DateTime to) {
-      from = DateTime(from.year, from.month, from.day);
-      to = DateTime(to.year, to.month, to.day);
-      return (to.difference(from).inHours / 24).round();
-    }
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return (to.difference(from).inHours / 24).round();
+  }
 
+  Widget _daysSinceCommitmentText() {
     return StreamBuilder<DocumentSnapshot>(
         stream: provideDocumentFieldStream(),
         builder:
@@ -140,9 +140,13 @@ class _HomePageState extends State<HomePage> {
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
             final data = snapshot.requireData;
-            // do calculation here
-            int test = 2;
-            return Text("Current streak: ${test} Days",
+            String quitDate = data['lastRelapse'];
+            var formatter = DateFormat('MMM dd, yyyy');
+            var formattedDate = formatter.parse(quitDate);
+            final todaysDate = DateTime.now();
+            final difference = daysBetween(formattedDate, todaysDate);
+
+            return Text("Current streak: $difference Day(s)",
                 style: const TextStyle(
                   fontSize: 18,
                   fontFamily: 'Indies',
@@ -159,31 +163,29 @@ class _HomePageState extends State<HomePage> {
   Widget _journeyStarted() {
     return Container(
       padding: const EdgeInsets.all(10),
-      height: 160,
+      height: 180,
       width: containerWidth,
       decoration: BoxDecoration(
-          color: Color.fromARGB(241, 250, 250, 250),
+          color: Colors.white,
           border: Border.all(
-            color: Color.fromARGB(241, 250, 250, 250),
+            color: Colors.white,
           ),
           borderRadius: BorderRadius.all(Radius.circular(20))),
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Container(
-              height: 100.0,
-              width: 100.0,
+              height: 120.0,
+              width: double.infinity,
               decoration: const BoxDecoration(
-                color: Colors.white,
-                image: DecorationImage(
-                  // TODO: help none of my images appear
-                  image: AssetImage('assets/images/quitsmoking.png'),
-                  fit: BoxFit.cover,
-                ),
-                shape: BoxShape.circle,
-              ),
+                  color: Colors.white,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/journeystarted.png'),
+                    fit: BoxFit.fitHeight,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             _journeyStartedText()
           ],
         ),
@@ -197,16 +199,16 @@ class _HomePageState extends State<HomePage> {
       height: 110,
       width: containerWidth,
       decoration: BoxDecoration(
-          color: Color.fromARGB(241, 250, 250, 250),
+          color: Colors.white,
           border: Border.all(
-            color: Color.fromARGB(241, 250, 250, 250),
+            color: Colors.white,
           ),
           borderRadius: BorderRadius.all(Radius.circular(20))),
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             _daysSinceCommitmentText(),
-            const Text("Total number of days since commitment",
+            const Text("Total days since commitment",
                 style: TextStyle(fontSize: 18, fontFamily: 'Indies'))
           ],
         ),
@@ -220,9 +222,9 @@ class _HomePageState extends State<HomePage> {
       height: 160,
       width: containerWidth,
       decoration: BoxDecoration(
-          color: Color.fromARGB(241, 250, 250, 250),
+          color: Colors.white,
           border: Border.all(
-            color: Color.fromARGB(241, 250, 250, 250),
+            color: Colors.white,
           ),
           borderRadius: BorderRadius.all(Radius.circular(20))),
       child: SingleChildScrollView(

@@ -66,6 +66,7 @@ flutter:
     assets:
         - assets/images/arrowdown.png
         - assets/images/quitsmoking.png
+        - assets/images/journeystarted.png
     # https://www.flaticon.com/free-icon/down-arrow_2985151?term=arrow%20down&page=1&position=24&page=1&position=24&related_id=2985151&origin=style
     #   - images/a_dot_ham.jpeg
 
