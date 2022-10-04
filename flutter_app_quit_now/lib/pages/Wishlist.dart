@@ -6,6 +6,7 @@ import 'package:flutter_app_quit_now/pages/addItem.dart';
 import 'package:flutter_app_quit_now/pages/admit_relapse.dart';
 import 'package:flutter_app_quit_now/pages/home_page.dart';
 import 'package:flutter_app_quit_now/pages/login.dart';
+import 'package:intl/intl.dart';
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({Key? key}) : super(key: key);
@@ -17,58 +18,70 @@ class WishlistPage extends StatefulWidget {
 class _WishlistPageState extends State<WishlistPage> {
   final User? user = Auth().currentUser;
 
-  final Stream<QuerySnapshot> userDetails =
-      FirebaseFirestore.instance.collection('userdetails').snapshots();
-
-  Stream<DocumentSnapshot> provideDocumentFieldStream() {
+  Stream<DocumentSnapshot> userDetailsDocumentFieldStream() {
     return FirebaseFirestore.instance
         .collection('userdetails')
         .doc(user?.uid)
         .snapshots();
   }
 
-  Widget _title() {
-    return const Text('Your Wish List');
+  Stream<QuerySnapshot<Map<String, dynamic>>> wishlistDocumentFieldStream() {
+    return FirebaseFirestore.instance
+        .collection('wishlist')
+        .where('uid', isEqualTo: user?.uid)
+        .snapshots();
   }
 
-  List todos = List.empty();
-  String title = "";
-  String description = "";
-  @override
-  void initState() {
-    super.initState();
-    todos = ["Hello", "Hey There"];
+  double totalSavings = 0;
+
+  Widget totalSavingsText() {
+    int daysBetween(DateTime from, DateTime to) {
+      from = DateTime(from.year, from.month, from.day);
+      to = DateTime(to.year, to.month, to.day);
+      return (to.difference(from).inHours / 24).round();
+    }
+
+    return StreamBuilder<DocumentSnapshot>(
+        stream: userDetailsDocumentFieldStream(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            final data = snapshot.requireData;
+
+            // formula: (diff/(SPP/SPD)) * CPP
+            String quitDate = data['quitDate'];
+            double costPerPack = data['costPerPack'].toDouble();
+            double sticksPerDay = data['sticksPerDay'].toDouble();
+            var sticksPerPack = data['sticksPerPack'].toDouble();
+            var formatter = DateFormat('MMM dd, yyyy');
+            var formattedDate = formatter.parse(quitDate);
+            final todaysDate = DateTime.now();
+            int difference = daysBetween(formattedDate, todaysDate);
+            double savings =
+                (difference.toDouble() / (sticksPerPack / sticksPerDay)) *
+                    costPerPack;
+            totalSavings = savings;
+
+            return Text("Total savings: \$${savings.toStringAsFixed(2)}",
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Indies',
+                    fontWeight: FontWeight.bold));
+          } else {
+            return const Text("Loading",
+                style: TextStyle(fontSize: 18, fontFamily: 'Indies'));
+          }
+        });
   }
 
-  // createToDo() {
-  //   DocumentReference documentReference =
-  //       FirebaseFirestore.instance.collection("MyTodos").doc(title);
+  String itemName = "";
+  String itemPrice = "";
 
-  //   Map<String, String> todoList = {
-  //     "todoTitle": title,
-  //     "todoDesc": description
-  //   };
-
-  //   documentReference
-  //       .set(todoList)
-  //       .whenComplete(() => print("Data stored successfully"));
-  // }
-  Future<String?> createToDo({String? uid}) async {
-    CollectionReference userDetails =
-        FirebaseFirestore.instance.collection('userdetails');
-    userDetails
-        .doc(user?.uid) //how to retrieve the id...
-        .collection('Wishlist')
-        .add({'todoTitle': title, 'todoDesc': description});
-  }
-
-  deleteTodo(item) {
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection("MyTodos").doc(item);
-
-    documentReference
-        .delete()
-        .whenComplete(() => print("deleted successfully"));
+  Future<void> createWishlistItem() async {
+    CollectionReference wishlistCollection =
+        FirebaseFirestore.instance.collection('wishlist');
+    wishlistCollection
+        .add({'itemName': itemName, 'itemPrice': itemPrice, 'uid': user?.uid});
   }
 
   Widget addItemButton() {
@@ -86,22 +99,29 @@ class _WishlistPageState extends State<WishlistPage> {
                   height: 200,
                   child: Column(
                     children: [
-                      TextField(
+                      TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Item name',
                         ),
                         onChanged: (String value) {
-                          title = value;
+                          itemName = value;
                         },
                       ),
-                      TextField(
-                        decoration: const InputDecoration(
-                          labelText: 'Item price',
-                        ),
-                        onChanged: (String value) {
-                          description = value;
-                        },
-                      ),
+                      TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'Item price',
+                          ),
+                          onChanged: (value) {
+                            itemPrice = value;
+                          },
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                double.tryParse(value) == null) {
+                              return "Please enter a valid price";
+                            }
+                            return null;
+                          }),
                     ],
                   ),
                 ),
@@ -109,8 +129,7 @@ class _WishlistPageState extends State<WishlistPage> {
                   TextButton(
                       onPressed: () {
                         setState(() {
-                          //todos.add(title);
-                          createToDo();
+                          createWishlistItem();
                         });
                         Navigator.of(context).pop();
                       },
@@ -126,6 +145,74 @@ class _WishlistPageState extends State<WishlistPage> {
     );
   }
 
+  Widget singleWishlistItem(String _itemName, String _itemPrice, int index) {
+    return Container(
+        padding: const EdgeInsets.all(5),
+        height: 60,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+                width: 260,
+                height: 70,
+                padding: const EdgeInsets.all(15),
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 250, 98, 98),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("${index + 1}. $_itemName",
+                          style: const TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'Indies',
+                              fontWeight: FontWeight.w500)),
+                      Text("\$${_itemPrice}",
+                          style: const TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'Indies',
+                              fontWeight: FontWeight.w500)),
+                    ])),
+            ElevatedButton(
+                onPressed: () => {},
+                style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(
+                      Color.fromARGB(255, 210, 210, 210)),
+                ),
+                child: Icon(Icons.delete))
+          ],
+        ));
+  }
+
+  Widget wishlistItems() {
+    return Container(
+        height: 300,
+        // width: double.infinity,
+        child: StreamBuilder<QuerySnapshot>(
+          stream: wishlistDocumentFieldStream(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasData) {
+              final data = snapshot.requireData;
+
+              if (data.size == 0) {
+                return const Text("Add an item to your wishlist!");
+              }
+
+              return ListView.builder(
+                itemCount: data.size,
+                itemBuilder: (context, index) {
+                  return singleWishlistItem(data.docs[index]['itemName'],
+                      data.docs[index]['itemPrice'], index);
+                },
+              );
+            } else {
+              return const Text("Loading");
+            }
+          },
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,10 +222,12 @@ class _WishlistPageState extends State<WishlistPage> {
           padding: const EdgeInsets.all(20),
           color: Colors.white,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const <Widget>[
-              SizedBox(height: 10),
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center, // vert center
+            children: <Widget>[
+              totalSavingsText(),
+              const SizedBox(height: 10),
+              wishlistItems()
             ],
           ),
         ),
