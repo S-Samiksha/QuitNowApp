@@ -84,6 +84,16 @@ class _WishlistPageState extends State<WishlistPage> {
         .add({'itemName': itemName, 'itemPrice': itemPrice, 'uid': user?.uid});
   }
 
+  Future<void> deleteWishlistItem(String docId) async {
+    CollectionReference wishlistCollection =
+        FirebaseFirestore.instance.collection('wishlist');
+    wishlistCollection
+        .doc(docId)
+        .delete()
+        .then((_) => print("Deleted item $docId"))
+        .catchError((error) => print('Delete failed for $docId: $error'));
+  }
+
   Widget addItemButton() {
     return FloatingActionButton(
       onPressed: () {
@@ -145,7 +155,8 @@ class _WishlistPageState extends State<WishlistPage> {
     );
   }
 
-  Widget singleWishlistItem(String _itemName, String _itemPrice, int index) {
+  Widget singleWishlistItem(
+      String _itemName, String _itemPrice, int index, String docId) {
     return Container(
         padding: const EdgeInsets.all(5),
         height: 60,
@@ -174,7 +185,7 @@ class _WishlistPageState extends State<WishlistPage> {
                               fontWeight: FontWeight.w500)),
                     ])),
             ElevatedButton(
-                onPressed: () => {},
+                onPressed: () async => {await deleteWishlistItem(docId)},
                 style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(
                       Color.fromARGB(255, 210, 210, 210)),
@@ -202,8 +213,11 @@ class _WishlistPageState extends State<WishlistPage> {
               return ListView.builder(
                 itemCount: data.size,
                 itemBuilder: (context, index) {
-                  return singleWishlistItem(data.docs[index]['itemName'],
-                      data.docs[index]['itemPrice'], index);
+                  return singleWishlistItem(
+                      data.docs[index]['itemName'],
+                      data.docs[index]['itemPrice'],
+                      index,
+                      data.docs[index].id);
                 },
               );
             } else {
