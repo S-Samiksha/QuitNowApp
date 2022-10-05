@@ -31,7 +31,7 @@ class UserDetailsForm extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const SizedBox(height: 80),
+              const SizedBox(height: 20),
               const Text(
                 "Tell us more about you",
                 style: TextStyle(fontSize: 25, fontFamily: 'Indies'),
@@ -39,7 +39,7 @@ class UserDetailsForm extends StatelessWidget {
               const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.all(20),
-                height: 400,
+                height: 480,
                 decoration: BoxDecoration(
                     color: Color.fromARGB(241, 250, 250, 250),
                     border: Border.all(
@@ -77,10 +77,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
   var sticksPerDay = 0;
   var costPerPack = 0;
   var sticksPerPack = 0;
-  var quitDate = '';
+
   DateTime todaysDate = DateTime.now();
   DateTime pickedDate = DateTime.now();
   var formatter = DateFormat('MMM dd, yyyy');
+  var quitDate = DateFormat('MMM dd, yyyy').format(DateTime.now());
 
   Widget chooseDate() {
     // String todaysDate = formatter.format(date);
@@ -125,41 +126,67 @@ class _MyCustomFormState extends State<MyCustomForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.person, color: Colors.grey),
-              labelText: 'Name',
-            ),
-            onChanged: (value) {
-              name = value;
-            },
-          ),
+              decoration: const InputDecoration(
+                icon: Icon(Icons.person, color: Colors.grey),
+                labelText: 'Name',
+              ),
+              onChanged: (value) {
+                name = value;
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Required field';
+                }
+                return null;
+              }),
           TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.smoking_rooms, color: Colors.grey),
-              labelText: 'Sticks Smoked per Day',
-            ),
-            onChanged: (value) {
-              sticksPerDay = int.parse(value);
-            },
-          ),
+              decoration: const InputDecoration(
+                icon: Icon(Icons.smoking_rooms, color: Colors.grey),
+                labelText: 'Sticks Smoked per Day',
+              ),
+              onChanged: (value) {
+                sticksPerDay = int.parse(value);
+              },
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    int.tryParse(value) == null) {
+                  return 'Please enter a valid whole number';
+                }
+                return null;
+              }),
           TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.attach_money, color: Colors.grey),
-              labelText: 'Cost of One Pack',
-            ),
-            onChanged: (value) {
-              costPerPack = int.parse(value);
-            },
-          ),
+              decoration: const InputDecoration(
+                icon: Icon(Icons.attach_money, color: Colors.grey),
+                labelText: 'Cost of One Pack',
+              ),
+              onChanged: (value) {
+                costPerPack = int.parse(value);
+              },
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    double.tryParse(value) == null) {
+                  return 'Please enter a valid price';
+                }
+                return null;
+              }),
           TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.shopping_cart_sharp, color: Colors.grey),
-              labelText: 'Sticks in One Pack',
-            ),
-            onChanged: (value) {
-              sticksPerPack = int.parse(value);
-            },
-          ),
+              decoration: const InputDecoration(
+                icon: Icon(Icons.shopping_cart_sharp, color: Colors.grey),
+                labelText: 'Sticks in One Pack',
+              ),
+              onChanged: (value) {
+                sticksPerPack = int.parse(value);
+              },
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    int.tryParse(value) == null) {
+                  return 'Please enter a valid whole number';
+                }
+                return null;
+              }),
           const SizedBox(height: 10),
           chooseDate(),
           const SizedBox(height: 10),
