@@ -129,6 +129,8 @@ class _WishlistPageState extends State<WishlistPage> {
   }
 
   Widget addItemButton() {
+    final _formKey = GlobalKey<FormState>();
+
     return FloatingActionButton(
       onPressed: () {
         showDialog(
@@ -139,43 +141,54 @@ class _WishlistPageState extends State<WishlistPage> {
                     borderRadius: BorderRadius.circular(10)),
                 title: const Text("Add Item"),
                 content: Container(
-                  width: 400,
-                  height: 200,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Item name',
-                        ),
-                        onChanged: (String value) {
-                          itemName = value;
-                        },
+                    width: 400,
+                    height: 200,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Item name',
+                              ),
+                              onChanged: (String value) {
+                                itemName = value;
+                              },
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.length > 15) {
+                                  return "Please enter a name (max 15 characters)";
+                                }
+                                return null;
+                              }),
+                          TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Item price',
+                              ),
+                              onChanged: (value) {
+                                itemPrice = value;
+                              },
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    double.tryParse(value) == null) {
+                                  return "Please enter a valid price";
+                                }
+                                return null;
+                              }),
+                        ],
                       ),
-                      TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'Item price',
-                          ),
-                          onChanged: (value) {
-                            itemPrice = value;
-                          },
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                double.tryParse(value) == null) {
-                              return "Please enter a valid price";
-                            }
-                            return null;
-                          }),
-                    ],
-                  ),
-                ),
+                    )),
                 actions: <Widget>[
                   TextButton(
                       onPressed: () {
-                        setState(() {
-                          createWishlistItem();
-                        });
-                        Navigator.of(context).pop();
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            createWishlistItem();
+                          });
+                          Navigator.of(context).pop();
+                        }
                       },
                       child: const Text("Add"))
                 ],
