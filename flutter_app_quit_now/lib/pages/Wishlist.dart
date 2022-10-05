@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_quit_now/auth.dart';
@@ -29,18 +31,46 @@ class _WishlistPageState extends State<WishlistPage> {
     return FirebaseFirestore.instance
         .collection('wishlist')
         .where('uid', isEqualTo: user?.uid)
+        .orderBy('createdAt', descending: false)
         .snapshots();
   }
 
   double totalSavings = 0;
 
-  Widget totalSavingsText() {
-    int daysBetween(DateTime from, DateTime to) {
-      from = DateTime(from.year, from.month, from.day);
-      to = DateTime(to.year, to.month, to.day);
-      return (to.difference(from).inHours / 24).round();
-    }
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return (to.difference(from).inHours / 24).round();
+  }
 
+  late final StreamSubscription userDetails;
+  @override
+  void initState() {
+    // TODO: implement initState
+    userDetails = FirebaseFirestore.instance
+        .collection('userdetails')
+        .doc(user?.uid)
+        .snapshots()
+        .listen((snapshot) {
+      final data = snapshot.data();
+      // formula: (diff/(SPP/SPD)) * CPP
+      String quitDate = data?['quitDate'];
+      double costPerPack = data?['costPerPack'].toDouble();
+      double sticksPerDay = data?['sticksPerDay'].toDouble();
+      var sticksPerPack = data?['sticksPerPack'].toDouble();
+      var formatter = DateFormat('MMM dd, yyyy');
+      var formattedDate = formatter.parse(quitDate);
+      final todaysDate = DateTime.now();
+      int difference = daysBetween(formattedDate, todaysDate);
+      double savings =
+          (difference.toDouble() / (sticksPerPack / sticksPerDay)) *
+              costPerPack;
+      totalSavings = savings;
+    });
+    super.initState();
+  }
+
+  Widget totalSavingsText() {
     return StreamBuilder<DocumentSnapshot>(
         stream: userDetailsDocumentFieldStream(),
         builder:
@@ -80,8 +110,12 @@ class _WishlistPageState extends State<WishlistPage> {
   Future<void> createWishlistItem() async {
     CollectionReference wishlistCollection =
         FirebaseFirestore.instance.collection('wishlist');
-    wishlistCollection
-        .add({'itemName': itemName, 'itemPrice': itemPrice, 'uid': user?.uid});
+    wishlistCollection.add({
+      'itemName': itemName,
+      'itemPrice': itemPrice,
+      'uid': user?.uid,
+      'createdAt': DateTime.now()
+    });
   }
 
   Future<void> deleteWishlistItem(String docId) async {
@@ -167,9 +201,11 @@ class _WishlistPageState extends State<WishlistPage> {
                 width: 260,
                 height: 70,
                 padding: const EdgeInsets.all(15),
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 250, 98, 98),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                decoration: BoxDecoration(
+                    color: totalSavings < double.parse(_itemPrice)
+                        ? const Color.fromARGB(255, 250, 98, 98)
+                        : const Color.fromARGB(255, 34, 239, 34),
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -178,7 +214,7 @@ class _WishlistPageState extends State<WishlistPage> {
                               fontSize: 15,
                               fontFamily: 'Indies',
                               fontWeight: FontWeight.w500)),
-                      Text("\$${_itemPrice}",
+                      Text("\$${double.parse(_itemPrice).toStringAsFixed(2)}",
                           style: const TextStyle(
                               fontSize: 15,
                               fontFamily: 'Indies',
@@ -197,7 +233,7 @@ class _WishlistPageState extends State<WishlistPage> {
 
   Widget wishlistItems() {
     return Container(
-        height: 300,
+        height: 480,
         // width: double.infinity,
         child: StreamBuilder<QuerySnapshot>(
           stream: wishlistDocumentFieldStream(),
@@ -221,7 +257,7 @@ class _WishlistPageState extends State<WishlistPage> {
                 },
               );
             } else {
-              return const Text("Loading");
+              return const Text("Loading...");
             }
           },
         ));
@@ -231,20 +267,21 @@ class _WishlistPageState extends State<WishlistPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          color: Colors.white,
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisAlignment: MainAxisAlignment.center, // vert center
-            children: <Widget>[
-              totalSavingsText(),
-              const SizedBox(height: 10),
-              wishlistItems()
-            ],
-          ),
-        ),
+            height: double.infinity,
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            color: Colors.white,
+            child: SingleChildScrollView(
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center, // vert center
+                children: <Widget>[
+                  wishlistItems(),
+                  const SizedBox(height: 50),
+                  totalSavingsText(),
+                ],
+              ),
+            )),
         floatingActionButton: addItemButton());
   }
 }
