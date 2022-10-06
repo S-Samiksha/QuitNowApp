@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_quit_now/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_app_quit_now/pages/addItem.dart';
 import 'package:flutter_app_quit_now/pages/admit_relapse.dart';
 import 'package:flutter_app_quit_now/pages/home_page.dart';
 import 'package:flutter_app_quit_now/pages/login.dart';
