@@ -45,15 +45,12 @@ When starting your vs code/android studio/vs/IDE remember to run the following:
 3. flutter pub get
    https://gist.github.com/minhcasi/2362b8ed369738cea2bf10a57ac569e1
 
-
-
 You must configure the flutterfirebase this is important!! <br>
 
 #### When configuring
 
 1. Install the flutterfire CLI following the YouTube Video: <br>
    https://www.youtube.com/watch?v=ZSVnIphlGKI
-
 
 type in the command: <br>
 flutterfire configure
@@ -65,16 +62,6 @@ https://www.youtube.com/c/FlutterMapp/videos
 https://www.youtube.com/watch?v=TcwQ74WVTTc
 https://www.youtube.com/watch?v=ZSVnIphlGKI
 
-#### To be done by Samiksha(will try them soon):
-
-1. checking password specifications (8 characters etc. )
-2. one upper case character, lower case character, a special character and a number.
-
-#### To be done by Valerie:
-
-1. Homepage UI
-2. Calendar picker for user form quit date
-
 #### Other stuff:
 
 1. Cannot click backspace
@@ -83,4 +70,18 @@ https://www.youtube.com/watch?v=ZSVnIphlGKI
 
 #### for testing purposes
 
-for userone usertwo userthree@test.com the password is all 123456,
+for userthree@test.com and userfour@test.com the password is !ABC123d
+
+### Demo (User Form):
+
+-   Show calendar picker for date hahah
+-   Can show that for the fields 'sticks smoked per day', 'sticks in one pack' - must enter valid integer, if not the UI will tell the user
+-   Can show that for the field 'cost of one pack' - must enter a valid price
+
+When registering, maybe can choose a quit date that is 10 days ago, so can see the total savings in the wishlist page
+
+### Demo (Wishlist)
+
+-   When adding item, must enter a valid price, if not the UI will show an error to the user also
+-   When add alot of items (>8 items), then can scroll to see
+-   Can add items that is less than total savings and more than total savings, so can show the red n green
