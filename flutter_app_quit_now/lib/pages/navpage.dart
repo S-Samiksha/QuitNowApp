@@ -31,11 +31,13 @@ class _NavPageState extends State<NavPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: _selectedIndex == 0
-              ? const Text('Home')
-              : _selectedIndex == 1
-                  ? const Text('Wishlist')
-                  : const Text('Admit Relapse')),
+        title: _selectedIndex == 0
+            ? const Text('Home')
+            : _selectedIndex == 1
+                ? const Text('Wishlist')
+                : const Text('Admit Relapse'),
+        automaticallyImplyLeading: false,
+      ),
       body: Center(
         child: _pages.elementAt(_selectedIndex),
       ),
