@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_quit_now/pages/register.dart';
+import 'forgot_pass.dart';
 import 'login.dart';
 import 'rounded_button.dart';
 import 'package:flutter_app_quit_now/pages/home_page.dart';
@@ -82,7 +83,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               const SizedBox(height:60),
               _LoginButton(),
               const SizedBox(height:10),
-              _RegisterButton()
+              _RegisterButton(),
+              TextButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPass())
+                  );
+                },
+                child: Text("Forgot Password?")
+              ),
               ]
               ), ),
             ),
