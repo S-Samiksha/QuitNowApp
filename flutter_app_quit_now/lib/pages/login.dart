@@ -19,12 +19,18 @@ class _LoginPageState extends State<LoginPage> {
   bool isLogin = false;
   String Email = '\0';
   String Password = '\0';
+  int counter=0;
 
   //final TextEditingController _controllerEmail = TextEditingController();
   //final TextEditingController _controllerPassword = TextEditingController();
 
   Future<bool> signInWithEmailAndPassword() async {
     try {
+
+      if (counter > 2){
+        throw Exception("Too Many Attempts! Try Again Later!");
+      }
+
       await Auth().signInWithEmailAndPassword(
         email: Email,
         password: Password,
@@ -32,7 +38,13 @@ class _LoginPageState extends State<LoginPage> {
       return Future.value(true);
     } on FirebaseAuthException catch (e) {
       setState(() {
+        counter++;
         errorMessage = e.message;
+      });
+      return Future.value(false);
+    } on Exception catch (e){
+      setState((){
+        errorMessage = (e.toString().substring(11));
       });
       return Future.value(false);
     }
@@ -61,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _submitButton() {
     return ElevatedButton(
       onPressed: () async => {
+
         if (await signInWithEmailAndPassword())
           {
             Navigator.pushReplacement(context,
