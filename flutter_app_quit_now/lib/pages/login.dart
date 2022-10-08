@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 60),
                       _submitButton(),
                       const SizedBox(height: 10),
-                      _RegisterButton()
+                      _RegisterButton(),
                     ],
                   ),
                 ),
