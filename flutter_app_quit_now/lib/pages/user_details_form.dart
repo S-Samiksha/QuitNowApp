@@ -73,10 +73,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
   final Stream<QuerySnapshot> userDetails =
       FirebaseFirestore.instance.collection('userdetails').snapshots();
 
-  var name = '';
-  var sticksPerDay = 0;
-  var costPerPack = 0;
-  var sticksPerPack = 0;
+  var name = "";
+  var sticksPerDay = "";
+  var costPerPack = "";
+  var sticksPerPack = "";
 
   DateTime todaysDate = DateTime.now();
   DateTime pickedDate = DateTime.now();
@@ -145,7 +145,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 labelText: 'Sticks Smoked per Day',
               ),
               onChanged: (value) {
-                sticksPerDay = int.parse(value);
+                sticksPerDay = value;
               },
               validator: (value) {
                 if (value == null ||
@@ -161,7 +161,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 labelText: 'Cost of One Pack',
               ),
               onChanged: (value) {
-                costPerPack = int.parse(value);
+                costPerPack = value;
               },
               validator: (value) {
                 if (value == null ||
@@ -177,7 +177,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 labelText: 'Sticks in One Pack',
               ),
               onChanged: (value) {
-                sticksPerPack = int.parse(value);
+                sticksPerPack = value;
               },
               validator: (value) {
                 if (value == null ||
@@ -205,9 +205,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       .doc(user?.uid) // DOC ID
                       .set({
                         'name': name,
-                        'sticksPerDay': sticksPerDay,
-                        'costPerPack': costPerPack,
-                        'sticksPerPack': sticksPerPack,
+                        'sticksPerDay': int.parse(sticksPerDay),
+                        'costPerPack': double.parse(costPerPack),
+                        'sticksPerPack': int.parse(sticksPerPack),
                         'quitDate': quitDate,
                         'lastRelapse': quitDate
                       }) // this will add if ID does not exist, update if it does
