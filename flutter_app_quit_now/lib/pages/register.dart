@@ -20,12 +20,16 @@ class _RegisterPageState extends State<RegisterPage> {
   String Email = '\0';
   String Password = '\0';
   String ConfirmPassword = '\0';
+  int counter=0;
 
   //final TextEditingController _controllerEmail = TextEditingController();
   //final TextEditingController _controllerPassword = TextEditingController();
 
   Future<bool> createUserWithEmailAndPassword() async {
     try {
+      if (counter > 2){
+        throw Exception("Too many attempts! Retry later!");
+      }
       if (Password.length < 8) {
         throw Exception("Password needs to be 8 Characters Long!");
       }
@@ -50,11 +54,13 @@ class _RegisterPageState extends State<RegisterPage> {
       return Future.value(true);
     } on FirebaseAuthException catch (e) {
       setState(() {
+        counter++; 
         errorMessage = e.message;
       });
       return Future.value(false);
     } on Exception catch (e) {
       setState(() {
+        counter++;
         errorMessage = (e.toString()).substring(11);
       });
       return Future.value(false);
