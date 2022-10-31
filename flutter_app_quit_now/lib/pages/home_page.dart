@@ -6,6 +6,8 @@ import 'package:flutter_app_quit_now/pages/Wishlist.dart';
 import 'package:flutter_app_quit_now/pages/admit_relapse.dart';
 import 'package:flutter_app_quit_now/pages/login.dart';
 import 'package:intl/intl.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:social_share/social_share.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -64,6 +66,10 @@ class _HomePageState extends State<HomePage> {
                 const Text('Sign Out', style: TextStyle(color: Colors.white))));
   }
 
+  String quitDateSM = "";
+  String commitmentSM = "";
+  String streakSM = "";
+
   Widget _welcomeBackText() {
     return StreamBuilder<DocumentSnapshot>(
         stream: provideDocumentFieldStream(),
@@ -92,6 +98,7 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             final data = snapshot.requireData;
 
+            quitDateSM = data['quitDate'];
             return Text("Your journey started on: ${data['quitDate']}",
                 style: const TextStyle(fontSize: 18, fontFamily: 'Indies'));
           } else {
@@ -121,6 +128,8 @@ class _HomePageState extends State<HomePage> {
             final todaysDate = DateTime.now();
             final difference = daysBetween(formattedDate, todaysDate);
 
+            commitmentSM = difference.toString();
+
             return Text(difference.toString(),
                 style: const TextStyle(
                     fontSize: 50,
@@ -145,6 +154,8 @@ class _HomePageState extends State<HomePage> {
             var formattedDate = formatter.parse(quitDate);
             final todaysDate = DateTime.now();
             final difference = daysBetween(formattedDate, todaysDate);
+
+            streakSM = difference.toString();
 
             return Text("Current streak: $difference Day(s)",
                 style: const TextStyle(
@@ -218,8 +229,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget _currentStreak() {
     return Container(
-      padding: const EdgeInsets.all(10),
-      height: 160,
+      padding: const EdgeInsets.all(2),
+      height: 150,
       width: containerWidth,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -263,8 +274,26 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _welcomeBackText(),
-            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _welcomeBackText(),
+                IconButton(
+                  icon: const FaIcon(FontAwesomeIcons.squareTwitter, size: 35),
+                  color: Color(0xFF0080fc),
+                  tooltip: 'Share on Twitter',
+                  onPressed: () async {
+                    SocialShare.shareTwitter(
+                      "Started to quit smoking on ${quitDateSM}, it has been ${commitmentSM} days and my current streak is ${streakSM} days ",
+                      hashtags: ["stop", "smoking", "streak"],
+                    ).then((data) {
+                      print(data);
+                    });
+                  },
+                ),
+              ],
+            ),
+            // const SizedBox(height: 10),
             _journeyStarted(),
             const SizedBox(height: 10),
             _daysSinceCommitment(),
